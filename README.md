@@ -13,7 +13,7 @@ An opinionated (only good opinions) Docker-based SSH development environment wit
 ```bash
 cp ~/.ssh/id_ed25519.pub .ssh/id_ed25519.pub
 cp .env.example .env
-# edit .env with your keys
+# edit .env with your keys (see Configuration below)
 make build
 ssh dev@localhost -p 2222
 ```
@@ -24,7 +24,7 @@ Once inside, run `agent` to start or attach to a tmux session.
 
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
 - **Node.js 22** + **opencode-ai** — AI coding assistant
-- **gh CLI** — authenticated via `GITHUB_TOKEN` from `.env`, git over HTTPS
+- **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
 - **Shell** — case-insensitive tab completion, history search via `.inputrc`
@@ -32,13 +32,26 @@ Once inside, run `agent` to start or attach to a tmux session.
 
 ## Configuration
 
-Set these in `.env`:
+Set these in `.env`. All variables are optional — configure only what you need.
 
 | Variable | Purpose |
 |---|---|
 | `GITHUB_TOKEN` | GitHub CLI auth, git over HTTPS |
-| `GITHUB_USERNAME` | Git commit name/email |
+| `GITHUB_USERNAME` | Git commit name/email (GitHub) |
+| `GITLAB_TOKEN` | GitLab CLI auth, git over HTTPS |
+| `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
 | `OPENCODE_API_KEY` | opencode API key |
+
+### Git provider combinations
+
+| Tokens set | What works |
+|---|---|
+| GitHub only | `gh` CLI authenticated, git commits use `GITHUB_USERNAME` |
+| GitLab only | `glab` CLI authenticated, git commits use `GITLAB_USERNAME` |
+| Both | Both CLIs authenticated, git commits use `GITHUB_USERNAME` |
+| Neither | No git provider configured — manually run `git config` and auth if needed |
+
+No combination will crash the container — missing tokens just skip the corresponding config.
 
 ## Adding skills
 
