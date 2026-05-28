@@ -28,10 +28,12 @@ RUN mkdir -p /home/dev/.ssh && \
 
 EXPOSE 22
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 USER dev
 
-RUN gh auth setup-git && \
-    git config --global push.default current && \
+RUN git config --global push.default current && \
     echo 'alias agent="tmux new-session -A -s agent"' >> /home/dev/.bashrc
 
 RUN mkdir -p /home/dev/.vim/pack/plugins/start && \
@@ -52,6 +54,7 @@ syntax on
 filetype plugin indent on
 set number
 set tabstop=2 shiftwidth=2 expandtab
+set nofoldenable
 VIMRC
 
 RUN cat > /home/dev/.tmux.conf << 'TMUX'
@@ -68,9 +71,6 @@ set completion-ignore-case on
 INPUTRC
 
 WORKDIR /workspace
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 RUN add-skill matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y
 
