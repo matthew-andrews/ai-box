@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # glab isn't in Debian apt repos, install the official .deb from GitLab
-RUN curl -sL "https://gitlab.com/gitlab-org/cli/-/releases/v1.47.0/downloads/glab_1.47.0_linux_amd64.deb" -o /tmp/glab.deb \
+RUN ARCH=$(dpkg --print-architecture) \
+    && curl -sL "https://gitlab.com/gitlab-org/cli/-/releases/v1.47.0/downloads/glab_1.47.0_linux_${ARCH}.deb" -o /tmp/glab.deb \
     && sudo dpkg -i /tmp/glab.deb \
     && rm /tmp/glab.deb
 
