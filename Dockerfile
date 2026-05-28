@@ -54,7 +54,7 @@ RUN cat > /home/dev/.vimrc << 'VIMRC'
 syntax on
 filetype plugin indent on
 set number
-set tabstop=2 shiftwidth=2 expandtab
+set noexpandtab
 set nofoldenable
 VIMRC
 
