@@ -20,7 +20,7 @@ Once inside, run `agent` to start or attach to a tmux session.
 
 ## What's inside
 
-- **SSH** — key-based auth only, password auth disabled, port 2222 → 22
+- **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
 - **Node.js 22** + **opencode-ai** — AI coding assistant
 - **gh CLI** — authenticated via `GITHUB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, 2-space tabs, folding disabled
