@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     python3 \
     build-essential \
     gh \
+    jq \
     && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g opencode-ai add-skill
