@@ -6,6 +6,7 @@ An opinionated (only good opinions) Docker-based SSH development environment wit
 
 - **Sandbox your AI.** Running an AI coding agent inside a Docker container limits its filesystem access to what you explicitly mount — a lightweight safety boundary for your host machine.
 - **Reproducible environment.** The entire dev environment (tools, configs, plugins, skills) is defined in code. One `make build` and you're on a fresh, identical setup anywhere.
+- **Portable terminal.** A consistent Linux environment you can SSH into from anywhere — iPad, another laptop, whatever. Everything is pre-configured and waiting.
 
 ## Quick start
 
