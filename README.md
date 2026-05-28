@@ -18,11 +18,12 @@ make build
 ssh dev@localhost -p 2222
 ```
 
-Once inside, run `agent` to start or attach to a tmux session.
+Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or `static` to serve the current directory on port 8080.
 
 ## What's inside
 
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
+- **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
 - **Node.js 22** + **opencode-ai** — AI coding assistant
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled

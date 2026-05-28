@@ -43,7 +43,8 @@ RUN chmod +x /entrypoint.sh
 USER dev
 
 RUN git config --global push.default current && \
-    echo 'alias agent="tmux new-session -A -s agent"' >> /home/dev/.bashrc
+    echo 'alias agent="tmux new-session -A -s agent"' >> /home/dev/.bashrc && \
+    echo 'alias static="python3 -m http.server 8080"' >> /home/dev/.bashrc
 
 RUN mkdir -p /home/dev/.vim/pack/plugins/start && \
     git clone --depth 1 https://github.com/pangloss/vim-javascript.git /home/dev/.vim/pack/plugins/start/vim-javascript && \

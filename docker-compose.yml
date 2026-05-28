@@ -5,6 +5,7 @@ services:
 
     ports:
       - "2222:22"
+      - "8080:8080"
 
     volumes:
       - ./workspace:/workspace
