@@ -10,6 +10,7 @@ An opinionated (only good opinions) Docker-based SSH development environment wit
 ## Quick start
 
 ```bash
+cp ~/.ssh/id_ed25519.pub .ssh/id_ed25519.pub
 cp .env.example .env
 # edit .env with your keys
 make build
