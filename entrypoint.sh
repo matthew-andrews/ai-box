@@ -1,18 +1,42 @@
 #!/bin/bash
 set -e
 
-mkdir -p /home/dev/.config/gh
-
-cat > /home/dev/.config/gh/hosts.yml << EOF
+if [ -n "$GITHUB_TOKEN" ]; then
+  mkdir -p /home/dev/.config/gh
+  cat > /home/dev/.config/gh/hosts.yml << EOF
 github.com:
     oauth_token: ${GITHUB_TOKEN}
     user: ${GITHUB_USERNAME}
     git_protocol: https
 EOF
+fi
 
-git config --global user.name "${GITHUB_USERNAME}"
-git config --global user.email "${GITHUB_USERNAME}@users.noreply.github.com"
-git config --global credential.helper "!gh auth git-credential"
+if [ -n "$GITLAB_TOKEN" ]; then
+  mkdir -p /home/dev/.config/glab-cli
+  cat > /home/dev/.config/glab-cli/config.yml << EOF
+hosts:
+  gitlab.com:
+    api_protocol: https
+    token: ${GITLAB_TOKEN}
+    user: ${GITLAB_USERNAME}
+    git_protocol: https
+EOF
+fi
+
+if [ -n "$GITHUB_USERNAME" ]; then
+  git config --global user.name "${GITHUB_USERNAME}"
+  git config --global user.email "${GITHUB_USERNAME}@users.noreply.github.com"
+elif [ -n "$GITLAB_USERNAME" ]; then
+  git config --global user.name "${GITLAB_USERNAME}"
+  git config --global user.email "${GITLAB_USERNAME}@users.noreply.github.com"
+fi
+
+if [ -n "$GITHUB_TOKEN" ]; then
+  git config --global credential.helper "!gh auth git-credential"
+fi
+if [ -n "$GITLAB_TOKEN" ]; then
+  git config --global credential.helper "!glab auth git-credential"
+fi
 
 mkdir -p /home/dev/.local/share/opencode
 cat > /home/dev/.local/share/opencode/auth.json << EOF
