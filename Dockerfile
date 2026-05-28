@@ -23,7 +23,7 @@ RUN ARCH=$(dpkg --print-architecture) \
     && sudo dpkg -i /tmp/glab.deb \
     && rm /tmp/glab.deb
 
-RUN npm install -g opencode-ai add-skill
+RUN npm install -g opencode-ai
 
 RUN useradd -ms /bin/bash dev && \
     echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -81,6 +81,6 @@ INPUTRC
 
 WORKDIR /workspace
 
-RUN add-skill matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y
+RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y
 
 ENTRYPOINT ["/entrypoint.sh"]
