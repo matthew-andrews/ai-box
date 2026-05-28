@@ -1,0 +1,22 @@
+services:
+  ai-dev:
+    build: .
+    container_name: ai-dev
+
+    ports:
+      - "2222:22"
+
+    volumes:
+      - ./workspace:/workspace
+      - ai-home:/home/dev
+      - .ssh/id_ed25519.pub:/home/dev/.ssh/authorized_keys:ro
+
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - GITHUB_USERNAME=${GITHUB_USERNAME}
+      - OPENCODE_API_KEY=${OPENCODE_API_KEY}
+
+    restart: unless-stopped
+
+volumes:
+  ai-home:
