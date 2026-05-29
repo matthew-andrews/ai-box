@@ -1,6 +1,7 @@
 .ssh
 !.ssh/*.example
 .env
+secrets
 workspace
 
 
