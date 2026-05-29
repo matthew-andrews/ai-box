@@ -27,6 +27,7 @@ hosts:
     user: ${GITLAB_USERNAME}
     git_protocol: https
 EOF
+  chmod 600 /home/dev/.config/glab-cli/config.yml
 fi
 
 if [ -n "$GITHUB_USERNAME" ]; then
