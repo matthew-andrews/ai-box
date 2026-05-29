@@ -44,6 +44,7 @@ USER dev
 
 RUN git config --global push.default current && \
     echo 'alias agent="tmux new-session -A -s agent"' >> /home/dev/.bashrc && \
+    echo 'pbcopy() { printf "\033]52;c;%s\a" "$(printf "%s" "$1" | base64 | tr -d "\n")"; }' >> /home/dev/.bashrc && \
     echo 'alias static="python3 -m http.server 8080"' >> /home/dev/.bashrc
 
 RUN mkdir -p /home/dev/.vim/pack/plugins/start && \
@@ -70,6 +71,8 @@ VIMRC
 RUN cat > /home/dev/.tmux.conf << 'TMUX'
 set -g mouse on
 set -g default-terminal "tmux-256color"
+set -g set-clipboard on
+set -g allow-passthrough on
 set -g status-right "#{?session_grouped,alias ,}#S"
 set -g status-interval 5
 TMUX
