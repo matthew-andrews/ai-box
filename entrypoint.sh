@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo "")
+GITHUB_USERNAME=$(cat /run/secrets/github_username 2>/dev/null || echo "")
+GITLAB_TOKEN=$(cat /run/secrets/gitlab_token 2>/dev/null || echo "")
+GITLAB_USERNAME=$(cat /run/secrets/gitlab_username 2>/dev/null || echo "")
+OPENCODE_API_KEY=$(cat /run/secrets/opencode_api_key 2>/dev/null || echo "")
+
 if [ -n "$GITHUB_TOKEN" ]; then
   mkdir -p /home/dev/.config/gh
   cat > /home/dev/.config/gh/hosts.yml << EOF

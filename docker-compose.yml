@@ -11,14 +11,26 @@ services:
       - ai-home:/home/dev
       - .ssh/id_ed25519.pub:/home/dev/.ssh/authorized_keys:ro
 
-    environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GITHUB_USERNAME=${GITHUB_USERNAME}
-      - GITLAB_TOKEN=${GITLAB_TOKEN}
-      - GITLAB_USERNAME=${GITLAB_USERNAME}
-      - OPENCODE_API_KEY=${OPENCODE_API_KEY}
+    secrets:
+      - github_token
+      - github_username
+      - gitlab_token
+      - gitlab_username
+      - opencode_api_key
 
     restart: unless-stopped
+
+secrets:
+  github_token:
+    file: ./secrets/github_token
+  github_username:
+    file: ./secrets/github_username
+  gitlab_token:
+    file: ./secrets/gitlab_token
+  gitlab_username:
+    file: ./secrets/gitlab_username
+  opencode_api_key:
+    file: ./secrets/opencode_api_key
 
 volumes:
   ai-home:
