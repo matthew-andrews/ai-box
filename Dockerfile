@@ -26,7 +26,8 @@ RUN ARCH=$(dpkg --print-architecture) \
 RUN npm install -g opencode-ai
 
 RUN useradd -ms /bin/bash dev && \
-    echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+    echo "dev ALL=(root) NOPASSWD: /usr/sbin/sshd, /usr/bin/chown" > /etc/sudoers.d/dev \
+    && chmod 440 /etc/sudoers.d/dev
 
 RUN mkdir /var/run/sshd
 

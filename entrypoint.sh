@@ -15,6 +15,7 @@ github.com:
     user: ${GITHUB_USERNAME}
     git_protocol: https
 EOF
+  chmod 600 /home/dev/.config/gh/hosts.yml
 fi
 
 if [ -n "$GITLAB_TOKEN" ]; then
@@ -54,6 +55,7 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
   }
 }
 EOF
+chmod 600 /home/dev/.local/share/opencode/auth.json
 
 sudo sh -c 'chown dev:dev /home/dev/.ssh /home/dev/.ssh/authorized_keys 2>/dev/null || true'
 
