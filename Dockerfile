@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     gh \
     jq \
+    zstd \
     && rm -rf /var/lib/apt/lists/*
 
 # glab isn't in Debian apt repos, install the official .deb from GitLab
