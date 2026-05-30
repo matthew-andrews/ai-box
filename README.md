@@ -30,6 +30,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
 - **Shell** — case-insensitive tab completion, history search via `.inputrc`
 - **Skills** — pre-installed opencode skills (add more in `Dockerfile`)
+- **Ollama CLI** — remote client; no local server, no model downloads. Aliases: `qwen`, `deepseek`, `ai-models`, `ai-running`, `ai-ping`. Helper functions: `ai-status`, `ai-test`, `ai-server-info`. Verify with `bash scripts/verify-ollama.sh`.
 
 ## Configuration
 
@@ -41,7 +42,10 @@ Set these in `.env`. All variables are optional — configure only what you need
 | `GITHUB_USERNAME` | Git commit name/email (GitHub) |
 | `GITLAB_TOKEN` | GitLab CLI auth, git over HTTPS |
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
+| `OLLAMA_HOST` | Remote Ollama server URL |
 | `OPENCODE_API_KEY` | opencode API key |
+
+`OLLAMA_HOST` is set in `.env`. Edit `.env` to point at your Ollama server — no rebuild needed, just `docker compose up`.
 
 ### Git provider combinations
 

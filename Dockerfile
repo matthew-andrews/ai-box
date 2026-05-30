@@ -25,6 +25,9 @@ RUN ARCH=$(dpkg --print-architecture) \
 
 RUN npm install -g opencode-ai
 
+# Install Ollama CLI only (no server, no model downloads)
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
 RUN useradd -ms /bin/bash dev && \
     echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
@@ -45,7 +48,16 @@ USER dev
 RUN git config --global push.default current && \
     echo 'alias agent="tmux new-session -A -s agent"' >> /home/dev/.bashrc && \
     echo 'pbcopy() { local input; input=$(cat); printf "\033]52;c;%s\a" "$(printf "%s" "$input" | base64 | tr -d "\n")"; }; pbpaste() { echo "pbpaste is not supported over OSC52"; }' >> /home/dev/.bashrc && \
-    echo 'alias static="python3 -m http.server 8080"' >> /home/dev/.bashrc
+    echo 'alias static="python3 -m http.server 8080"' >> /home/dev/.bashrc && \
+    echo 'alias qwen='"'"'ollama run qwen3:8b'"'"'' >> /home/dev/.bashrc && \
+    echo 'alias deepseek='"'"'ollama run deepseek-r1:8b'"'"'' >> /home/dev/.bashrc && \
+    echo 'alias ai-models='"'"'ollama list'"'"'' >> /home/dev/.bashrc && \
+    echo 'alias ai-running='"'"'ollama ps'"'"'' >> /home/dev/.bashrc && \
+    echo 'alias ai-ping='"'"'curl $OLLAMA_HOST/api/tags'"'"'' >> /home/dev/.bashrc && \
+    echo '' >> /home/dev/.bashrc && \
+    echo 'ai-status() { echo "OLLAMA_HOST=$OLLAMA_HOST"; ollama ps; }' >> /home/dev/.bashrc && \
+    echo 'ai-test() { echo "Testing Ollama connectivity..."; curl -sf "$OLLAMA_HOST/api/tags" >/dev/null; echo "Connection successful."; }' >> /home/dev/.bashrc && \
+    echo 'ai-server-info() { echo "Host: $OLLAMA_HOST"; echo; echo "=== Installed Models ==="; ollama list; echo; echo "=== Running Models ==="; ollama ps; }' >> /home/dev/.bashrc
 
 RUN mkdir -p /home/dev/.vim/pack/plugins/start && \
     git clone --depth 1 https://github.com/pangloss/vim-javascript.git /home/dev/.vim/pack/plugins/start/vim-javascript && \
