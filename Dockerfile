@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y \
     tmux \
     less \
     vim \
-    sudo \
     python3 \
     build-essential \
     gh \
@@ -20,13 +19,12 @@ RUN ARCH=$(dpkg --print-architecture) \
     && GLAB_TAG=$(curl -s "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases?per_page=1" | jq -r '.[0].tag_name') \
     && GLAB_VER=${GLAB_TAG#v} \
     && curl -sL "https://gitlab.com/gitlab-org/cli/-/releases/${GLAB_TAG}/downloads/glab_${GLAB_VER}_linux_${ARCH}.deb" -o /tmp/glab.deb \
-    && sudo dpkg -i /tmp/glab.deb \
+    && dpkg -i /tmp/glab.deb \
     && rm /tmp/glab.deb
 
 RUN npm install -g opencode-ai
 
-RUN useradd -ms /bin/bash dev && \
-    echo "dev ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+RUN useradd -ms /bin/bash dev
 
 RUN mkdir /var/run/sshd
 
@@ -85,6 +83,9 @@ INPUTRC
 
 WORKDIR /workspace
 
-RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y
+RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
+    npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
+
+USER root
 
 ENTRYPOINT ["/entrypoint.sh"]
