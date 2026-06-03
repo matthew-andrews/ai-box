@@ -55,6 +55,6 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
 }
 EOF
 
-sudo sh -c 'chown dev:dev /home/dev/.ssh /home/dev/.ssh/authorized_keys 2>/dev/null || true'
+chown -R dev:dev /home/dev 2>/dev/null || true
 
-exec sudo /usr/sbin/sshd -D
+exec /usr/sbin/sshd -D
