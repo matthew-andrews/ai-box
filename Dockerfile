@@ -12,7 +12,13 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     gh \
     jq \
+    locales \
     && rm -rf /var/lib/apt/lists/*
+
+RUN echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && \
+    locale-gen
+
+ENV LANG=en_US.UTF-8
 
 # glab isn't in Debian apt repos, install the official .deb from GitLab
 RUN ARCH=$(dpkg --print-architecture) \
