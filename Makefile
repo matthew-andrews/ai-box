@@ -1,3 +1,9 @@
+# Clears Docker build cache older than 24h so next build fetches latest versions
+# (e.g. opencode-ai npm package, glab releases). ./workspace is preserved.
+clear-cache:
+	docker compose down -v
+	docker builder prune -f --filter until=24h
+
 build:
 	@if [ "$$(uname -s)" != "Darwin" ] || [ "$$(uname -m)" != "arm64" ]; then \
 		echo "Error: build is only supported on Apple Silicon (macOS arm64). Detected: $$(uname -s) $$(uname -m)" >&2; \
