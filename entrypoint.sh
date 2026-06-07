@@ -39,10 +39,10 @@ elif [ -n "$GITLAB_USERNAME" ]; then
 fi
 
 if [ -n "$GITHUB_TOKEN" ]; then
-  git config --global credential.helper "!gh auth git-credential"
+  git config -f /home/dev/.gitconfig credential.https://github.com.helper "!gh auth git-credential"
 fi
 if [ -n "$GITLAB_TOKEN" ]; then
-  git config --global credential.helper "!glab auth git-credential"
+  git config -f /home/dev/.gitconfig credential.https://gitlab.com.helper "!glab auth git-credential"
 fi
 
 mkdir -p /home/dev/.local/share/opencode
