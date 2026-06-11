@@ -34,7 +34,8 @@ RUN useradd -ms /bin/bash dev
 
 RUN mkdir /var/run/sshd
 
-RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
+    echo "AcceptEnv TZ" >> /etc/ssh/sshd_config
 
 RUN mkdir -p /home/dev/.ssh && \
     chmod 700 /home/dev/.ssh
