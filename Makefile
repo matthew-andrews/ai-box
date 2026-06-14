@@ -15,7 +15,7 @@ build:
 	fi
 	mkdir -p secrets
 	set -a; source .env; set +a; \
-	  for var in GITHUB_TOKEN GITHUB_USERNAME GITLAB_TOKEN GITLAB_USERNAME OPENCODE_API_KEY; do \
+	  for var in GITHUB_TOKEN GITHUB_USERNAME GITLAB_TOKEN GITLAB_USERNAME OPENCODE_ZEN_API_KEY OPENCODE_GO_API_KEY; do \
 	    printf '%s' "$${!var}" > "secrets/$$(echo "$$var" | tr '[:upper:]' '[:lower:]')"; \
 	  done
 	docker compose down -v

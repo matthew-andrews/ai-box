@@ -41,7 +41,8 @@ Set these in `.env`. All variables are optional — configure only what you need
 | `GITHUB_USERNAME` | Git commit name/email (GitHub) |
 | `GITLAB_TOKEN` | GitLab CLI auth, git over HTTPS |
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
-| `OPENCODE_API_KEY` | opencode API key |
+| `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
+| `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
 
 ### Git provider combinations
 
