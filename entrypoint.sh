@@ -45,6 +45,14 @@ if [ -n "$GITLAB_TOKEN" ]; then
   git config -f /home/dev/.gitconfig credential.https://gitlab.com.helper "!glab auth git-credential"
 fi
 
+mkdir -p /home/dev/.config/opencode
+cat > /home/dev/.config/opencode/opencode.json << EOF
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "model": "${OPENCODE_MODEL:-opencode-go/deepseek-v4-flash}"
+}
+EOF
+
 mkdir -p /home/dev/.local/share/opencode
 cat > /home/dev/.local/share/opencode/auth.json << EOF
 {
