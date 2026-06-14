@@ -5,7 +5,8 @@ GITHUB_TOKEN=$(cat /run/secrets/github_token 2>/dev/null || echo "")
 GITHUB_USERNAME=$(cat /run/secrets/github_username 2>/dev/null || echo "")
 GITLAB_TOKEN=$(cat /run/secrets/gitlab_token 2>/dev/null || echo "")
 GITLAB_USERNAME=$(cat /run/secrets/gitlab_username 2>/dev/null || echo "")
-OPENCODE_API_KEY=$(cat /run/secrets/opencode_api_key 2>/dev/null || echo "")
+OPENCODE_ZEN_API_KEY=$(cat /run/secrets/opencode_zen_api_key 2>/dev/null || echo "")
+OPENCODE_GO_API_KEY=$(cat /run/secrets/opencode_go_api_key 2>/dev/null || echo "")
 
 if [ -n "$GITHUB_TOKEN" ]; then
   mkdir -p /home/dev/.config/gh
@@ -58,7 +59,11 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
 {
   "opencode": {
     "type": "api",
-    "key": "${OPENCODE_API_KEY}"
+    "key": "${OPENCODE_ZEN_API_KEY}"
+  },
+  "opencode-go": {
+    "type": "api",
+    "key": "${OPENCODE_GO_API_KEY}"
   }
 }
 EOF

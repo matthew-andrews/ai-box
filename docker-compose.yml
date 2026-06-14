@@ -21,7 +21,8 @@ services:
       - github_username
       - gitlab_token
       - gitlab_username
-      - opencode_api_key
+      - opencode_zen_api_key
+      - opencode_go_api_key
 
     restart: unless-stopped
 
@@ -34,8 +35,10 @@ secrets:
     file: ./secrets/gitlab_token
   gitlab_username:
     file: ./secrets/gitlab_username
-  opencode_api_key:
-    file: ./secrets/opencode_api_key
+  opencode_zen_api_key:
+    file: ./secrets/opencode_zen_api_key
+  opencode_go_api_key:
+    file: ./secrets/opencode_go_api_key
 
 volumes:
   ai-home:
