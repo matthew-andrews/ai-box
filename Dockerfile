@@ -18,7 +18,12 @@ RUN apt-get update && apt-get install -y \
 RUN echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen && \
     locale-gen
 
+RUN apt-get update && apt-get install -y tzdata && \
+    ln -fs /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
 ENV LANG=en_US.UTF-8
+ENV TZ=Asia/Tokyo
 
 # glab isn't in Debian apt repos, install the official .deb from GitLab
 RUN ARCH=$(dpkg --print-architecture) \
@@ -34,8 +39,7 @@ RUN useradd -ms /bin/bash dev
 
 RUN mkdir /var/run/sshd
 
-RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
-    echo "AcceptEnv TZ" >> /etc/ssh/sshd_config
+RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
 
 RUN mkdir -p /home/dev/.ssh && \
     chmod 700 /home/dev/.ssh
