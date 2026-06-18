@@ -49,12 +49,19 @@ if [ -n "$GITLAB_TOKEN" ]; then
 fi
 
 mkdir -p /home/dev/.config/opencode
-cat > /home/dev/.config/opencode/opencode.json << EOF
+if [ -f /home/dev/.config/opencode/opencode.json ]; then
+  jq --arg model "${OPENCODE_MODEL:-opencode/deepseek-v4-flash-free}" \
+    '."$schema" = "https://opencode.ai/config.json" | .model = $model' \
+    /home/dev/.config/opencode/opencode.json > /tmp/opencode.json
+  mv /tmp/opencode.json /home/dev/.config/opencode/opencode.json
+else
+  cat > /home/dev/.config/opencode/opencode.json << EOF
 {
   "\$schema": "https://opencode.ai/config.json",
   "model": "${OPENCODE_MODEL:-opencode/deepseek-v4-flash-free}"
 }
 EOF
+fi
 
 mkdir -p /home/dev/.local/share/opencode
 cat > /home/dev/.local/share/opencode/auth.json << EOF
