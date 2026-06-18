@@ -25,6 +25,7 @@ services:
       - opencode_zen_api_key
       - opencode_go_api_key
       - opencode_server_password
+      - opencode_server_username
 
     restart: unless-stopped
 
@@ -43,6 +44,8 @@ secrets:
     file: ./secrets/opencode_go_api_key
   opencode_server_password:
     file: ./secrets/opencode_server_password
+  opencode_server_username:
+    file: ./secrets/opencode_server_username
 
 volumes:
   ai-home:
