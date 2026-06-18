@@ -6,6 +6,7 @@ services:
     ports:
       - "2222:22"
       - "8080:8080"
+      - "4096:4096"
 
     volumes:
       - ./workspace:/workspace
@@ -23,6 +24,7 @@ services:
       - gitlab_username
       - opencode_zen_api_key
       - opencode_go_api_key
+      - opencode_server_password
 
     restart: unless-stopped
 
@@ -39,6 +41,8 @@ secrets:
     file: ./secrets/opencode_zen_api_key
   opencode_go_api_key:
     file: ./secrets/opencode_go_api_key
+  opencode_server_password:
+    file: ./secrets/opencode_server_password
 
 volumes:
   ai-home:

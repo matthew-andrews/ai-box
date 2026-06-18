@@ -7,6 +7,7 @@ GITLAB_TOKEN=$(cat /run/secrets/gitlab_token 2>/dev/null || echo "")
 GITLAB_USERNAME=$(cat /run/secrets/gitlab_username 2>/dev/null || echo "")
 OPENCODE_ZEN_API_KEY=$(cat /run/secrets/opencode_zen_api_key 2>/dev/null || echo "")
 OPENCODE_GO_API_KEY=$(cat /run/secrets/opencode_go_api_key 2>/dev/null || echo "")
+OPENCODE_SERVER_PASSWORD=$(cat /run/secrets/opencode_server_password 2>/dev/null || echo "")
 
 if [ -n "$GITHUB_TOKEN" ]; then
   mkdir -p /home/dev/.config/gh
@@ -69,5 +70,9 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
 EOF
 
 chown -R dev:dev /home/dev 2>/dev/null || true
+
+export OPENCODE_SERVER_PASSWORD
+su dev -c 'opencode serve --hostname 0.0.0.0 --port 4096' \
+  > /tmp/opencode-server.log 2>&1 &
 
 exec /usr/sbin/sshd -D
