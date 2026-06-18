@@ -71,8 +71,10 @@ EOF
 
 chown -R dev:dev /home/dev 2>/dev/null || true
 
-export OPENCODE_SERVER_PASSWORD
-su dev -c 'opencode serve --hostname 0.0.0.0 --port 4096' \
-  > /tmp/opencode-server.log 2>&1 &
+if [ -n "$OPENCODE_SERVER_PASSWORD" ]; then
+  export OPENCODE_SERVER_PASSWORD
+  su dev -c 'opencode serve --hostname 0.0.0.0 --port 4096' \
+    > /tmp/opencode-server.log 2>&1 &
+fi
 
 exec /usr/sbin/sshd -D
