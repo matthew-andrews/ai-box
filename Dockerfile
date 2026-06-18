@@ -100,7 +100,7 @@ WORKDIR /workspace
 RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
     npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
 
-RUN npx opencode-mobile install --yes || echo "Warning: opencode-mobile install failed, mobile push notifications will not be available"
+RUN npx opencode-mobile install --yes --provider cloudflare || echo "Warning: opencode-mobile install failed, mobile push notifications will not be available"
 
 USER root
 
