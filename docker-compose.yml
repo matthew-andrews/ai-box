@@ -15,7 +15,7 @@ services:
 
     environment:
       - TZ=Asia/Tokyo
-      - OPENCODE_MODEL=${OPENCODE_MODEL:-opencode-go/deepseek-v4-flash}
+      - OPENCODE_MODEL=${OPENCODE_MODEL:-opencode/deepseek-v4-flash-free}
 
     secrets:
       - github_token
