@@ -3,5 +3,6 @@
 .env
 secrets
 workspace
+gemini-config
 
 
