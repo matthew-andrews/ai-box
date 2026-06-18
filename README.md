@@ -24,7 +24,8 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
-- **Node.js 22** + **opencode-ai** — AI coding assistant
+- **Node.js 22** + **opencode-ai** — AI coding assistant (auto-starts `opencode serve` when `OPENCODE_SERVER_PASSWORD` is set)
+- **opencode-mobile** — plugin for mobile push notifications; run `/mobile` inside opencode to connect your phone
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
@@ -43,6 +44,8 @@ Set these in `.env`. All variables are optional — configure only what you need
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
 | `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
 | `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
+| `OPENCODE_SERVER_PASSWORD` | Password for `opencode serve` (HTTP basic auth) — enables mobile app connectivity |
+| `OPENCODE_SERVER_USERNAME` | Username for `opencode serve` (defaults to `opencode`) |
 
 ### Git provider combinations
 
@@ -54,6 +57,19 @@ Set these in `.env`. All variables are optional — configure only what you need
 | Neither | No git provider configured — manually run `git config` and auth if needed |
 
 No combination will crash the container — missing tokens just skip the corresponding config.
+
+## OpenCode Server & Mobile
+
+When `OPENCODE_SERVER_PASSWORD` is set, the container auto-starts `opencode serve` on port 4096. Connect from the opencode mobile app or any HTTP client:
+
+| Field | Value |
+|---|---|
+| Host | `<container-ip>` |
+| Port | `4096` |
+| Username | `opencode` (or `OPENCODE_SERVER_USERNAME`) |
+| Password | `OPENCODE_SERVER_PASSWORD` |
+
+For mobile push notifications, start opencode inside the container and run `/mobile` — it will show a QR code to scan with the [opencode mobile app](https://github.com/doza62/opencode-mobile).
 
 ## Adding skills
 
