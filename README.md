@@ -25,6 +25,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
 - **Node.js 22** + **opencode-ai** — AI coding assistant
+- **Gemini CLI** — `gemini` for an AI agent in your terminal, OAuth persists across rebuilds
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
@@ -54,6 +55,19 @@ Set these in `.env`. All variables are optional — configure only what you need
 | Neither | No git provider configured — manually run `git config` and auth if needed |
 
 No combination will crash the container — missing tokens just skip the corresponding config.
+
+## Gemini CLI authentication
+
+Gemini CLI uses its own built-in OAuth — no API key or `.env` variable needed.
+
+```bash
+ssh dev@localhost -p 2222
+gemini
+```
+
+The first time you run `gemini`, choose **Sign in with Google**. A URL will appear — open it in your host browser, authenticate, and paste the verification code back into the terminal.
+
+Credentials are stored in `~/.gemini/`, which is bind-mounted to `./gemini-config/` on the host. This means authentication **survives `make build`** — you only authenticate once.
 
 ## Adding skills
 

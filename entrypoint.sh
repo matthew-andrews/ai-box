@@ -68,6 +68,18 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
 }
 EOF
 
+if command -v gemini &>/dev/null; then
+  echo "[ok] Gemini CLI — $(gemini --version 2>/dev/null | head -1 || echo 'installed')"
+  GEMINI_CREDENTIALS=$(ls /home/dev/.gemini/*.json 2>/dev/null | head -1)
+  if [ -n "$GEMINI_CREDENTIALS" ]; then
+    echo "[ok] Gemini CLI — authenticated (credentials: $(basename "$GEMINI_CREDENTIALS"))"
+  else
+    echo "[..] Gemini CLI — not authenticated (run 'gemini' and sign in with Google; auth persists across rebuilds)"
+  fi
+else
+  echo "[..] Gemini CLI — not installed"
+fi
+
 chown -R dev:dev /home/dev 2>/dev/null || true
 
 exec /usr/sbin/sshd -D

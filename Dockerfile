@@ -35,6 +35,8 @@ RUN ARCH=$(dpkg --print-architecture) \
 
 RUN npm install -g opencode-ai
 
+RUN npm install -g @google/gemini-cli
+
 RUN useradd -ms /bin/bash dev
 
 RUN mkdir /var/run/sshd
