@@ -49,6 +49,9 @@ EXPOSE 22
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN curl -sL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -o /usr/local/bin/cloudflared && \
+    chmod +x /usr/local/bin/cloudflared
+
 USER dev
 
 RUN git config --global push.default current && \
@@ -97,7 +100,7 @@ WORKDIR /workspace
 RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
     npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
 
-RUN npx opencode-mobile install --yes --skip-tunnel-setup || echo "Warning: opencode-mobile install failed, mobile push notifications will not be available"
+RUN npx opencode-mobile install --yes || echo "Warning: opencode-mobile install failed, mobile push notifications will not be available"
 
 USER root
 
