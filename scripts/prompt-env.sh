@@ -2,17 +2,11 @@
 set -e
 
 ENV_FILE=".env"
-ENV_EXAMPLE=".env.example"
 
 ensure_env() {
   if [ ! -f "$ENV_FILE" ]; then
-    if [ -f "$ENV_EXAMPLE" ]; then
-      cp "$ENV_EXAMPLE" "$ENV_FILE"
-      echo "Created $ENV_FILE from $ENV_EXAMPLE"
-    else
-      touch "$ENV_FILE"
-      echo "Created empty $ENV_FILE"
-    fi
+    touch "$ENV_FILE"
+    echo "Created empty $ENV_FILE"
   fi
 }
 

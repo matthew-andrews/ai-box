@@ -8,8 +8,7 @@
 
 ## Adding a new environment variable
 
-1. Add it to `.env.example` with an empty value
-2. Pass it through in `docker-compose.yml` under `environment` or `secrets`
+1. Pass it through in `docker-compose.yml` under `environment` or `secrets`
 3. Use it in `entrypoint.sh` if needed at startup
 4. Document it in the `README.md` configuration table
 
