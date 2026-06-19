@@ -25,7 +25,7 @@ update_env() {
     printf '%s=%s\n' "${var_name}" "${var_value}" >> "${ENV_FILE}.tmp"
     mv "${ENV_FILE}.tmp" "$ENV_FILE"
   else
-    printf '\n%s=%s\n' "${var_name}" "${var_value}" >> "$ENV_FILE"
+    printf '%s=%s\n' "${var_name}" "${var_value}" >> "$ENV_FILE"
   fi
 }
 
