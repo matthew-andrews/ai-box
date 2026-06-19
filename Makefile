@@ -17,7 +17,8 @@ build:
 	  auto_username "GITLAB_TOKEN" "GITLAB_USERNAME" "https://gitlab.com/api/v4/user" && \
 	  prompt_secret "OPENCODE_ZEN_API_KEY" "OpenCode Zen API key" && \
 	  prompt_secret "OPENCODE_GO_API_KEY" "OpenCode Go API key" && \
-	  prompt_default "OPENCODE_MODEL" "Model" "opencode/deepseek-v4-flash-free"
+	  prompt_default "OPENCODE_MODEL" "Model" "opencode/deepseek-v4-flash-free" && \
+	  prompt_path "SSH_KEY_PATH" "SSH public key path" "~/.ssh/id_ed25519.pub"
 	mkdir -p secrets
 	set -a; source .env; set +a; \
 	  for var in GITHUB_TOKEN GITHUB_USERNAME GITLAB_TOKEN GITLAB_USERNAME OPENCODE_ZEN_API_KEY OPENCODE_GO_API_KEY; do \

@@ -18,6 +18,12 @@ If the new variable is a user-supplied secret:
 - Add a `prompt_secret` call in the `build` target in `Makefile` for initial setup
 - Create a dedicated `make auth-<name>` target in `Makefile` for rotation (see existing `auth-github`, `auth-gitlab`, `auth-opencode`)
 
+### User-supplied file paths (SSH keys, configs)
+
+If the new variable is a user-supplied file path:
+- Add a `prompt_path` call in the `build` target in `Makefile` (see existing `SSH_KEY_PATH` prompt)
+- No secrets copy needed — Docker Compose mounts the path directly
+
 ### Auto-derivable values (usernames from tokens)
 
 If the value can be derived from an existing secret (e.g. GitHub username from token):

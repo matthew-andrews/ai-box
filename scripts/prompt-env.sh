@@ -77,6 +77,28 @@ prompt_default() {
   fi
 }
 
+prompt_path() {
+  local var_name="$1"
+  local description="$2"
+  local default="$3"
+  local current
+  current=$(get_env "$var_name")
+  local display="${current:-$default}"
+
+  read -r -p "${description} [${display}]: " new_value
+  if [ -n "$new_value" ]; then
+    local resolved="${new_value/#\~/$HOME}"
+    update_env "$var_name" "$resolved"
+    echo "  ${var_name} set to ${resolved}"
+  elif [ -z "$current" ]; then
+    local resolved="${default/#\~/$HOME}"
+    update_env "$var_name" "$resolved"
+    echo "  ${var_name} set to default (${resolved})"
+  else
+    echo "  ${var_name} kept (${current})"
+  fi
+}
+
 auto_username() {
   local token_var="$1"
   local user_var="$2"
