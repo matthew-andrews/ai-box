@@ -11,10 +11,7 @@ An opinionated (only good opinions) Docker-based SSH development environment wit
 ## Quick start
 
 ```bash
-cp ~/.ssh/id_ed25519.pub .ssh/id_ed25519.pub
-cp .env.example .env
-# edit .env with your keys (see Configuration below)
-make build
+make build    # prompts interactively for tokens + SSH key path
 ssh dev@localhost -p 2222
 ```
 
@@ -22,7 +19,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 
 ## What's inside
 
-- **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Drop your public key in `.ssh/id_ed25519.pub` (see `.ssh/id_ed25519.pub.example`).
+- **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Public key path is prompted during `make build` (defaults to `~/.ssh/id_ed25519.pub`).
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
 - **Node.js 22** + **opencode-ai** — AI coding assistant
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
@@ -33,7 +30,15 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 
 ## Configuration
 
-Set these in `.env`. All variables are optional — configure only what you need.
+`make build` prompts interactively for tokens and your SSH public key path, storing everything in `.env`. To update tokens without a full rebuild:
+
+```bash
+make auth-github    # update GitHub token + auto-detect username
+make auth-gitlab    # update GitLab token + auto-detect username
+make auth-opencode  # update OpenCode API keys
+```
+
+All variables are optional — press Enter at any prompt to skip.
 
 | Variable | Purpose |
 |---|---|
@@ -43,6 +48,8 @@ Set these in `.env`. All variables are optional — configure only what you need
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
 | `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
 | `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
+| `OPENCODE_MODEL` | Default opencode model (default: `opencode/deepseek-v4-flash-free`) |
+| `SSH_KEY_PATH` | Path to SSH public key mounted as `authorized_keys` (default: `~/.ssh/id_ed25519.pub`) |
 
 ### Git provider combinations
 
@@ -65,4 +72,4 @@ Add a `RUN add-skill ...` line to the Dockerfile, then `make build`.
 make build
 ```
 
-Tears down the container, removes the home volume, and rebuilds from scratch.
+Tears down the container, removes the home volume, and rebuilds from scratch. Missing values will be prompted for interactively; press Enter to skip any variable and it will be empty in the container. Use `make auth-*` targets to add or update tokens between rebuilds.
