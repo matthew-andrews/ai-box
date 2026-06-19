@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
     vim \
     python3 \
     build-essential \
-    gh \
     jq \
     locales \
     && rm -rf /var/lib/apt/lists/*
@@ -32,6 +31,14 @@ RUN ARCH=$(dpkg --print-architecture) \
     && curl -sL "https://gitlab.com/gitlab-org/cli/-/releases/${GLAB_TAG}/downloads/glab_${GLAB_VER}_linux_${ARCH}.deb" -o /tmp/glab.deb \
     && dpkg -i /tmp/glab.deb \
     && rm /tmp/glab.deb
+
+# gh: GitHub CLI from official releases (Debian apt version is too old)
+RUN ARCH=$(dpkg --print-architecture) \
+    && GH_TAG=$(curl -s "https://api.github.com/repos/cli/cli/releases/latest" | jq -r '.tag_name') \
+    && GH_VER=${GH_TAG#v} \
+    && curl -sL "https://github.com/cli/cli/releases/download/${GH_TAG}/gh_${GH_VER}_linux_${ARCH}.deb" -o /tmp/gh.deb \
+    && dpkg -i /tmp/gh.deb \
+    && rm /tmp/gh.deb
 
 RUN npm install -g opencode-ai
 

@@ -112,9 +112,16 @@ auto_username() {
     return
   fi
 
+  local auth_header
+  if echo "${api_url}" | grep -qi "gitlab"; then
+    auth_header="PRIVATE-TOKEN: ${token}"
+  else
+    auth_header="Authorization: token ${token}"
+  fi
+
   local user
   user=$(curl -sSf --max-time 5 \
-    -H "Authorization: token ${token}" \
+    -H "${auth_header}" \
     "${api_url}" 2>/dev/null | python3 -c "
 import sys, json
 try:

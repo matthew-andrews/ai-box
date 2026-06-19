@@ -25,6 +25,7 @@ build:
 	    printf '%s' "$${!var}" > "secrets/$$(echo "$$var" | tr '[:upper:]' '[:lower:]')"; \
 	  done
 	docker compose down -v
+	docker builder prune -f --filter until=24h
 	docker compose up -d --build
 
 auth-github:
