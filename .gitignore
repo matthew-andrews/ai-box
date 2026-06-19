@@ -1,12 +1,10 @@
 .ssh
-<<<<<<< Updated upstream
 .env
-=======
-!.ssh/*.example
 .env*
 !.env.example
->>>>>>> Stashed changes
 secrets
 workspace
+
+!.ssh/*.example
 
 
