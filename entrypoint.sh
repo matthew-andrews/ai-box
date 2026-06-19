@@ -63,19 +63,18 @@ else
 EOF
 fi
 
+if [ -z "$OPENCODE_ZEN_API_KEY" ]; then
+  echo "WARNING: OPENCODE_ZEN_API_KEY is not set. Zen models (including free DeepSeek V4 Flash Free) will not be available."
+fi
+
 mkdir -p /home/dev/.local/share/opencode
-cat > /home/dev/.local/share/opencode/auth.json << EOF
-{
-  "opencode": {
-    "type": "api",
-    "key": "${OPENCODE_ZEN_API_KEY}"
-  },
-  "opencode-go": {
-    "type": "api",
-    "key": "${OPENCODE_GO_API_KEY}"
-  }
-}
-EOF
+jq -n \
+  --arg zen_key "$OPENCODE_ZEN_API_KEY" \
+  --arg go_key "$OPENCODE_GO_API_KEY" \
+  '{} 
+  | if $zen_key != "" then .opencode = {"type": "api", "key": $zen_key} else . end
+  | if $go_key != "" then .["opencode-go"] = {"type": "api", "key": $go_key} else . end' \
+  > /home/dev/.local/share/opencode/auth.json
 
 chown -R dev:dev /home/dev 2>/dev/null || true
 
@@ -84,6 +83,26 @@ if [ -n "$OPENCODE_SERVER_PASSWORD" ]; then
   export OPENCODE_SERVER_USERNAME
   su dev -c 'opencode serve --hostname 0.0.0.0 --port 4096' \
     > /tmp/opencode-server.log 2>&1 &
+
+  # Wait for the server to be ready, then start cloudflared tunnel
+  (
+    for i in $(seq 1 15); do
+      if curl -s -o /dev/null http://localhost:4096 2>/dev/null; then
+        break
+      fi
+      sleep 1
+    done
+    nohup cloudflared tunnel --url http://localhost:4096 \
+      > /tmp/cloudflared.log 2>&1 &
+    for i in $(seq 1 30); do
+      TUNNEL_URL=$(grep -oP 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' /tmp/cloudflared.log 2>/dev/null | head -1)
+      if [ -n "$TUNNEL_URL" ]; then
+        echo "{\"url\": \"$TUNNEL_URL\"}" > /home/dev/.local/share/opencode/tunnel.json
+        break
+      fi
+      sleep 1
+    done
+  ) &
 fi
 
 exec /usr/sbin/sshd -D
