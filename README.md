@@ -12,9 +12,7 @@ An opinionated (only good opinions) Docker-based SSH development environment wit
 
 ```bash
 cp ~/.ssh/id_ed25519.pub .ssh/id_ed25519.pub
-cp .env.example .env
-# edit .env with your keys (see Configuration below)
-make build
+make build    # prompts interactively for tokens
 ssh dev@localhost -p 2222
 ```
 
@@ -33,7 +31,15 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 
 ## Configuration
 
-Set these in `.env`. All variables are optional — configure only what you need.
+`make build` prompts interactively for tokens and stores them in `.env`. To update tokens without a full rebuild:
+
+```bash
+make auth-github    # update GitHub token + auto-detect username
+make auth-gitlab    # update GitLab token + auto-detect username
+make auth-opencode  # update OpenCode API keys
+```
+
+All variables are optional — press Enter at any prompt to skip.
 
 | Variable | Purpose |
 |---|---|
@@ -43,6 +49,7 @@ Set these in `.env`. All variables are optional — configure only what you need
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
 | `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
 | `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
+| `OPENCODE_MODEL` | Default opencode model (default: `opencode/deepseek-v4-flash-free`) |
 
 ### Git provider combinations
 
@@ -65,4 +72,4 @@ Add a `RUN add-skill ...` line to the Dockerfile, then `make build`.
 make build
 ```
 
-Tears down the container, removes the home volume, and rebuilds from scratch.
+Tears down the container, removes the home volume, and rebuilds from scratch. Missing tokens will be prompted for interactively; press Enter to skip any variable and it will be empty in the container. Use `make auth-*` targets to add or update tokens between rebuilds.
