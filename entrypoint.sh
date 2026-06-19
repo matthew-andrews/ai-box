@@ -97,7 +97,7 @@ if [ -n "$OPENCODE_SERVER_PASSWORD" ]; then
     for i in $(seq 1 30); do
       TUNNEL_URL=$(grep -oP 'https://[a-zA-Z0-9.-]+\.trycloudflare\.com' /tmp/cloudflared.log 2>/dev/null | head -1)
       if [ -n "$TUNNEL_URL" ]; then
-        echo "{\"url\": \"$TUNNEL_URL\"}" > /home/dev/.local/share/opencode/tunnel.json
+        echo "{\"url\": \"$TUNNEL_URL\"}" > /home/dev/.config/opencode/tunnel.json
         break
       fi
       sleep 1
