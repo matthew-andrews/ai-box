@@ -10,7 +10,7 @@ services:
     volumes:
       - ./workspace:/workspace
       - ai-home:/home/dev
-      - ${SSH_KEY_PATH}:/home/dev/.ssh/authorized_keys:ro
+      - ./.ssh/authorized_keys:/home/dev/.ssh/authorized_keys:ro
 
     environment:
       - TZ=Asia/Tokyo

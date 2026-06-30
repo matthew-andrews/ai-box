@@ -19,7 +19,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 
 ## What's inside
 
-- **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Public key path is prompted during `make build` (defaults to `~/.ssh/id_ed25519.pub`).
+- **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Accepts a file path or glob pattern (default `~/.ssh/*.pub`). Multiple devices are supported — each device's public key in the glob is authorized.
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
 - **Node.js 22** + **opencode-ai** — AI coding assistant
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
@@ -49,7 +49,7 @@ All variables are optional — press Enter at any prompt to skip.
 | `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
 | `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
 | `OPENCODE_MODEL` | Default opencode model (default: `opencode/deepseek-v4-flash-free`) |
-| `SSH_KEY_PATH` | Path to SSH public key mounted as `authorized_keys` (default: `~/.ssh/id_ed25519.pub`) |
+| `SSH_KEY_PATH` | Path or glob for SSH public key(s) (default: `~/.ssh/*.pub`). All matching `.pub` files are authorized. |
 
 ### Git provider combinations
 

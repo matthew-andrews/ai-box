@@ -85,7 +85,7 @@ prompt_path() {
   current=$(get_env "$var_name")
   local display="${current:-$default}"
 
-  read -r -p "${description} [${display}]: " new_value
+  read -r -p "${description} (path or glob) [${display}]: " new_value
   if [ -n "$new_value" ]; then
     local resolved="${new_value/#\~/$HOME}"
     update_env "$var_name" "$resolved"

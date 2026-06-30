@@ -11,7 +11,7 @@ build:
 	fi
 	@. scripts/prompt-env.sh && \
 	  ensure_env && \
-	  prompt_path "SSH_KEY_PATH" "SSH public key path" "~/.ssh/id_ed25519.pub" && \
+	  prompt_path "SSH_KEY_PATH" "SSH public key" "~/.ssh/*.pub" && \
 	  prompt_secret "GITHUB_TOKEN" "GitHub personal access token" && \
 	  auto_username "GITHUB_TOKEN" "GITHUB_USERNAME" "https://api.github.com/user" && \
 	  prompt_secret "GITLAB_TOKEN" "GitLab personal access token" && \
@@ -19,6 +19,17 @@ build:
 	  prompt_secret "OPENCODE_ZEN_API_KEY" "OpenCode Zen API key" && \
 	  prompt_secret "OPENCODE_GO_API_KEY" "OpenCode Go API key" && \
 	  prompt_default "OPENCODE_MODEL" "Model" "opencode/deepseek-v4-flash-free"
+	mkdir -p .ssh
+	set -a; source .env; set +a; \
+	  shopt -s nullglob; \
+	  files=($${SSH_KEY_PATH}); \
+	  if [ $${#files[@]} -eq 0 ]; then \
+	    echo "Error: no SSH public keys found matching $${SSH_KEY_PATH}" >&2; \
+	    exit 1; \
+	  fi; \
+	  echo "  Found $${#files[@]} SSH public key(s)"; \
+	  cat "$${files[@]}" > .ssh/authorized_keys; \
+	  chmod 600 .ssh/authorized_keys
 	mkdir -p secrets
 	set -a; source .env; set +a; \
 	  for var in GITHUB_TOKEN GITHUB_USERNAME GITLAB_TOKEN GITLAB_USERNAME OPENCODE_ZEN_API_KEY OPENCODE_GO_API_KEY; do \
