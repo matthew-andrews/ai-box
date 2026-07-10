@@ -15,7 +15,7 @@ make build    # prompts interactively for tokens + SSH key path
 ssh dev@localhost -p 2222
 ```
 
-Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or `static` to serve the current directory on port 8080.
+Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, `static` to serve the current directory on port 8080, or `docker compose up` to start services from any mounted project.
 
 ## What's inside
 
@@ -27,6 +27,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, or
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
 - **Shell** — case-insensitive tab completion, history search via `.inputrc`
 - **Skills** — pre-installed opencode skills (add more in `Dockerfile`)
+- **Docker CLI** — docker + docker compose available inside the container via host socket mount (`/var/run/docker.sock`). Run `docker ps`, `docker compose up`, etc. from any mounted workspace project.
 
 ## Configuration
 

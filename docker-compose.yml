@@ -11,6 +11,7 @@ services:
       - ./workspace:/workspace
       - ai-home:/home/dev
       - ./.ssh/authorized_keys:/home/dev/.ssh/authorized_keys:ro
+      - /var/run/docker.sock:/var/run/docker.sock
 
     environment:
       - TZ=Asia/Tokyo

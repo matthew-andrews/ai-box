@@ -24,6 +24,12 @@ RUN apt-get update && apt-get install -y tzdata && \
 ENV LANG=en_US.UTF-8
 ENV TZ=Asia/Tokyo
 
+# Docker CLI (for running docker compose from inside the container)
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker.gpg && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && apt-get install -y docker-ce-cli docker-compose-plugin && \
+    rm -rf /var/lib/apt/lists/*
+
 # glab isn't in Debian apt repos, install the official .deb from GitLab
 RUN ARCH=$(dpkg --print-architecture) \
     && GLAB_TAG=$(curl -s "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases?per_page=1" | jq -r '.[0].tag_name') \
