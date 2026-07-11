@@ -68,13 +68,6 @@ cat > /home/dev/.local/share/opencode/auth.json << EOF
 }
 EOF
 
-# Add dev user to docker group (if socket is mounted)
-DOCKER_GID=$(stat -c %g /var/run/docker.sock 2>/dev/null || echo "")
-if [ -n "$DOCKER_GID" ]; then
-  getent group docker >/dev/null 2>&1 || groupadd -r docker
-  groupmod -g "$DOCKER_GID" docker 2>/dev/null || true
-  usermod -aG docker dev
-fi
 chown -R dev:dev /home/dev 2>/dev/null || true
 
 exec /usr/sbin/sshd -D

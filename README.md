@@ -27,7 +27,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, `s
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
 - **Shell** — case-insensitive tab completion, history search via `.inputrc`
 - **Skills** — pre-installed opencode skills (add more in `Dockerfile`)
-- **Docker CLI** — docker + docker compose available inside the container via host socket mount (`/var/run/docker.sock`). Run `docker ps`, `docker compose up`, etc. from any mounted workspace project.
+- **Docker CLI** — docker + docker compose are installed inside the container for running builds and tests, but do not have access to the host's Docker daemon.
 
 ## Configuration
 
