@@ -48,6 +48,20 @@ RUN ARCH=$(dpkg --print-architecture) \
 
 RUN npm install -g opencode-ai
 
+ARG RTK_VERSION
+RUN ARCH=$(dpkg --print-architecture) \
+    && case "$ARCH" in amd64) RTK_TARGET="x86_64-unknown-linux-musl" ;; arm64) RTK_TARGET="aarch64-unknown-linux-gnu" ;; *) echo "unsupported arch: $ARCH" >&2; exit 1 ;; esac \
+    && if [ -n "$RTK_VERSION" ]; then RTK_TAG="$RTK_VERSION"; else RTK_TAG=$(curl -s "https://api.github.com/repos/rtk-ai/rtk/releases/latest" | jq -r '.tag_name'); fi \
+    && curl -fsSL "https://github.com/rtk-ai/rtk/releases/download/${RTK_TAG}/rtk-${RTK_TARGET}.tar.gz" -o /tmp/rtk.tar.gz \
+    && curl -fsSL "https://github.com/rtk-ai/rtk/releases/download/${RTK_TAG}/checksums.txt" -o /tmp/checksums.txt \
+    && grep "rtk-${RTK_TARGET}.tar.gz" /tmp/checksums.txt | (cd /tmp && sha256sum -c -) \
+    && ! tar -tzf /tmp/rtk.tar.gz | grep -qE '^/|(^|/)\.\.(/|$)' \
+    && tar -xzf /tmp/rtk.tar.gz -C /tmp \
+    && mv /tmp/rtk /usr/local/bin/rtk \
+    && chmod +x /usr/local/bin/rtk \
+    && rm /tmp/rtk.tar.gz /tmp/checksums.txt \
+    && rtk --version
+
 RUN useradd -ms /bin/bash dev
 
 RUN mkdir /var/run/sshd
@@ -109,6 +123,8 @@ WORKDIR /workspace
 
 RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
     npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
+
+RUN rtk init -g --opencode --auto-patch
 
 USER root
 
