@@ -65,7 +65,7 @@ RUN ARCH=$(dpkg --print-architecture) \
 
 RUN useradd -ms /bin/bash dev
 
-RUN mkdir /var/run/sshd
+RUN mkdir -p /var/run/sshd
 
 RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
 
