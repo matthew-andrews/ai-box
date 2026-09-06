@@ -22,6 +22,7 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, `s
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Accepts a file path or glob pattern (default `~/.ssh/*.pub`). Multiple devices are supported — each device's public key in the glob is authorized.
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
 - **Node.js 22** + **opencode-ai** — AI coding assistant
+- **RTK** — Rust Token Killer, compresses bash output by 60-90% for opencode via `tool.execute.before` plugin (`rtk gain` for savings)
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
