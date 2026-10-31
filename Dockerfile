@@ -1,4 +1,4 @@
-FROM node:22-trixie
+FROM node:26.13.0-trixie
 
 RUN apt-get update && apt-get install -y \
     openssh-server \
@@ -46,7 +46,7 @@ RUN ARCH=$(dpkg --print-architecture) \
     && dpkg -i /tmp/gh.deb \
     && rm /tmp/gh.deb
 
-RUN npm install -g opencode-ai
+RUN npm install -g @opencode/cli@2.2.5
 
 ARG RTK_VERSION
 RUN ARCH=$(dpkg --print-architecture) \
@@ -122,8 +122,8 @@ INPUTRC
 
 WORKDIR /workspace
 
-RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
-    npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
+RUN npx --yes skills@1.7.4 add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
+    npx --yes skills@1.7.4 add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
 
 RUN rtk init -g --opencode --auto-patch
 

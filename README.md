@@ -21,13 +21,13 @@ Once inside, run `agent` to start (or reconnect to) the `agent` tmux session, `s
 
 - **SSH** — key-based auth only, password auth disabled, port 2222 → 22. Accepts a file path or glob pattern (default `~/.ssh/*.pub`). Multiple devices are supported — each device's public key in the glob is authorized.
 - **static file server** — `static` alias runs `python3 -m http.server 8080` to serve the current directory; accessible at `http://localhost:8080` on the host.
-- **Node.js 22** + **opencode-ai** — AI coding assistant
+- **Node.js 26.13.0** + **OpenCode CLI 2.2.5** — AI coding assistant
 - **RTK** — Rust Token Killer, compresses bash output by 60-90% for opencode via `tool.execute.before` plugin (`rtk gain` for savings)
 - **gh CLI** + **glab CLI** — authenticated via `GITHUB_TOKEN` / `GITLAB_TOKEN` from `.env`, git over HTTPS
 - **vim** — 10 plugins (JS, JSON, Markdown, Dockerfile syntax; fugitive, commentary, surround, repeat, gitgutter, lightline); syntax highlighting, line numbers, real tabs, folding disabled
 - **tmux** — mouse support, 256-color terminal, `agent` alias for session management
 - **Shell** — case-insensitive tab completion, history search via `.inputrc`
-- **Skills** — pre-installed opencode skills (add more in `Dockerfile`)
+- **Skills** — pre-installed OpenCode skills using the Skills CLI 1.7.4 (add more in `Dockerfile`)
 - **Docker CLI** — docker + docker compose are installed inside the container for running builds and tests, but do not have access to the host's Docker daemon.
 
 ## Configuration
@@ -50,7 +50,7 @@ All variables are optional — press Enter at any prompt to skip.
 | `GITLAB_USERNAME` | GitLab username, fallback git commit identity |
 | `OPENCODE_ZEN_API_KEY` | OpenCode Zen API key (pay-as-you-go models, `opencode/` prefix) |
 | `OPENCODE_GO_API_KEY` | OpenCode Go API key (subscription models, `opencode-go/` prefix) |
-| `OPENCODE_MODEL` | Default opencode model (default: `opencode/deepseek-v4-flash-free`) |
+| `OPENCODE_MODEL` | Default OpenCode model (default: `opencode/deepseek-v4.1-flash-free`) |
 | `SSH_KEY_PATH` | Path or glob for SSH public key(s) (default: `~/.ssh/*.pub`). All matching `.pub` files are authorized. |
 
 ### Git provider combinations

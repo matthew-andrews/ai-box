@@ -1,5 +1,5 @@
 # Clears Docker build cache older than 24h so next build fetches latest versions
-# (e.g. opencode-ai npm package, glab releases). ./workspace is preserved.
+# (e.g. OpenCode CLI, glab releases). ./workspace is preserved.
 clear-cache:
 	docker compose down -v
 	docker builder prune -f --filter until=24h
@@ -18,7 +18,7 @@ build:
 	  auto_username "GITLAB_TOKEN" "GITLAB_USERNAME" "https://gitlab.com/api/v4/user" && \
 	  prompt_secret "OPENCODE_ZEN_API_KEY" "OpenCode Zen API key" && \
 	  prompt_secret "OPENCODE_GO_API_KEY" "OpenCode Go API key" && \
-	  prompt_default "OPENCODE_MODEL" "Model" "opencode/deepseek-v4-flash-free"
+	  prompt_default "OPENCODE_MODEL" "Model" "opencode/deepseek-v4.1-flash-free"
 	mkdir -p .ssh
 	set -a; source .env; set +a; \
 	  shopt -s nullglob; \
