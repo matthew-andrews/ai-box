@@ -1,4 +1,4 @@
-FROM node:22-bookworm
+FROM node:22-trixie
 
 RUN apt-get update && apt-get install -y \
     openssh-server \
@@ -26,7 +26,7 @@ ENV TZ=Asia/Tokyo
 
 # Docker CLI (for running docker compose from inside the container)
 RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian trixie stable" > /etc/apt/sources.list.d/docker.list && \
     apt-get update && apt-get install -y docker-ce-cli docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
@@ -48,9 +48,24 @@ RUN ARCH=$(dpkg --print-architecture) \
 
 RUN npm install -g opencode-ai
 
+ARG RTK_VERSION
+RUN ARCH=$(dpkg --print-architecture) \
+    && case "$ARCH" in amd64) RTK_TARGET="x86_64-unknown-linux-musl" ;; arm64) RTK_TARGET="aarch64-unknown-linux-gnu" ;; *) echo "unsupported arch: $ARCH" >&2; exit 1 ;; esac \
+    && if [ -n "$RTK_VERSION" ]; then RTK_TAG="$RTK_VERSION"; else RTK_TAG=$(curl -s "https://api.github.com/repos/rtk-ai/rtk/releases/latest" | jq -r '.tag_name'); fi \
+    && RTK_TARBALL="rtk-${RTK_TARGET}.tar.gz" \
+    && curl -fsSL "https://github.com/rtk-ai/rtk/releases/download/${RTK_TAG}/${RTK_TARBALL}" -o "/tmp/${RTK_TARBALL}" \
+    && curl -fsSL "https://github.com/rtk-ai/rtk/releases/download/${RTK_TAG}/checksums.txt" -o /tmp/checksums.txt \
+    && grep -F " ${RTK_TARBALL}" /tmp/checksums.txt | (cd /tmp && sha256sum -c -) \
+    && ! tar -tzf "/tmp/${RTK_TARBALL}" | grep -qE '^/|(^|/)\.\.(/|$)' \
+    && tar -xzf "/tmp/${RTK_TARBALL}" -C /tmp \
+    && mv /tmp/rtk /usr/local/bin/rtk \
+    && chmod +x /usr/local/bin/rtk \
+    && rm "/tmp/${RTK_TARBALL}" /tmp/checksums.txt \
+    && rtk --version
+
 RUN useradd -ms /bin/bash dev
 
-RUN mkdir /var/run/sshd
+RUN mkdir -p /var/run/sshd
 
 RUN echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
 
@@ -109,6 +124,8 @@ WORKDIR /workspace
 
 RUN npx skills add matthew-andrews/skills --skill github-autonomous-worker -g -a opencode -y && \
     npx skills add matthew-andrews/skills --skill autonomous-coding-agent -g -a opencode -y
+
+RUN rtk init -g --opencode --auto-patch
 
 USER root
 

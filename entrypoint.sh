@@ -76,4 +76,6 @@ EOF
 
 chown -R dev:dev /home/dev 2>/dev/null || true
 
+runuser -u dev -- /usr/local/bin/rtk init -g --opencode --auto-patch >/dev/null 2>&1 || true
+
 exec /usr/sbin/sshd -D
