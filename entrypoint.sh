@@ -50,13 +50,11 @@ mkdir -p /home/dev/.config/opencode
 cat > /home/dev/.config/opencode/opencode.json << EOF
 {
   "\$schema": "https://opencode.ai/config.json",
-  "model": "${OPENCODE_MODEL:-opencode-go/deepseek-v4-flash}",
-  "permission": {
-    "external_directory": {
-      "/tmp/**": "allow",
-      "/tmp/opencode/**": "allow"
-    }
-  }
+  "model": "${OPENCODE_MODEL:-opencode-go/deepseek-v4.1-flash}",
+  "permissions": [
+    { "action": "external_directory", "resource": "/tmp/**", "effect": "allow" },
+    { "action": "external_directory", "resource": "/tmp/opencode/**", "effect": "allow" }
+  ]
 }
 EOF
 
